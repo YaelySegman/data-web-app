@@ -12,7 +12,7 @@ This document provides instructions for setting up the Data Web Application on b
 1. **Clone the repository**
 
    ```
-   git clone <repository-url>
+   git clone https://github.com/YaelySegman/data-web-app.git
    cd data-web-app
    ```
 
@@ -50,7 +50,7 @@ This document provides instructions for setting up the Data Web Application on b
 1. **Clone the repository**
 
    ```
-   git clone <repository-url>
+   git clone https://github.com/YaelySegman/data-web-app.git
    cd data-web-app
    ```
 
