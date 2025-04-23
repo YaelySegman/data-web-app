@@ -25,6 +25,47 @@ document.addEventListener('DOMContentLoaded', function() {
             sortTable(table, column, !isAsc);
         });
     });
+    
+    // Toggle archived data visibility
+    const showArchivedCheckbox = document.getElementById('show-archived');
+    if (showArchivedCheckbox) {
+        // Show archived rows by default if the checkbox is checked
+        const inactiveRows = document.querySelectorAll('tr.inactive');
+        inactiveRows.forEach(row => {
+            if (showArchivedCheckbox.checked) {
+                row.classList.add('show-archived');
+            }
+        });
+
+        showArchivedCheckbox.addEventListener('change', function() {
+            const inactiveRows = document.querySelectorAll('tr.inactive');
+            inactiveRows.forEach(row => {
+                if (this.checked) {
+                    row.classList.add('show-archived');
+                } else {
+                    row.classList.remove('show-archived');
+                }
+            });
+        });
+    }
+    
+    // Search functionality
+    const searchInput = document.getElementById('patient-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            const rows = table.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const patientId = row.getAttribute('data-patient-id').toLowerCase();
+                if (patientId.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
 });
 
 function sortTable(table, column, asc) {
