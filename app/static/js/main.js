@@ -1,4 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Handle flash messages
+    const messages = document.querySelectorAll('.message');
+    messages.forEach(message => {
+        // Add appropriate class based on message content
+        if (message.textContent.toLowerCase().includes('success')) {
+            message.classList.add('success');
+        } else {
+            message.classList.add('error');
+        }
+        
+        // Remove message after animation
+        setTimeout(() => {
+            message.remove();
+        }, 5000);
+    });
+
     // Get the table element
     // const table = document.getElementById('data-table');      TODO: REmove later
     const table = document.getElementById('patient_outcomes-table');
