@@ -1,0 +1,15 @@
+DROP TABLE IF EXISTS data;
+
+CREATE TABLE IF NOT EXISTS patients (
+    patient_id VARCHAR(255) PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS patient_outcomes (
+    id SERIAL PRIMARY KEY,
+    patient_id VARCHAR(255) REFERENCES patients(patient_id),
+    outcome TEXT NOT NULL,
+    recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_current BOOLEAN DEFAULT TRUE
+);
+
