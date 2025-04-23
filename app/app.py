@@ -38,6 +38,7 @@ def upload_file():
         flash('No selected file')
         return redirect(request.url)
     
+    # Check if the file is a CSV
     if file and file.filename.endswith('.csv'):
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -70,7 +71,7 @@ def upload_file():
                         
                         # Save the processed data
                         save_data(data_to_save)
-                        flash('File successfully uploaded and processed')
+                        flash('success: File successfully uploaded and processed')
                         return redirect(url_for('view_data'))
                 except UnicodeDecodeError:
                     # Try the next encoding
@@ -78,12 +79,13 @@ def upload_file():
             
             flash('Could not process CSV file with any supported encoding')
             return redirect(url_for('index'))
+        
         else:
             flash(f'Invalid CSV file: {message}')
             return redirect(url_for('index'))
     else:
         flash('Only CSV files are allowed')
-        return redirect(url_for('index'))
+        return redirect(request.url)  # Redirect to the same URL to avoid Method Not Allowed
 
 @app.route('/data')
 def view_data():
