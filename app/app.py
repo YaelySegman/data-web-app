@@ -24,19 +24,20 @@ def close_connection(exception):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    data = get_all_data()
+    return render_template('index.html', data=data)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
         flash('No file part')
-        return redirect(request.url)
+        return redirect(url_for('index'))
     
     file = request.files['file']
     
     if file.filename == '':
         flash('No selected file')
-        return redirect(request.url)
+        return redirect(url_for('index'))
     
     # Check if the file is a CSV
     if file and file.filename.endswith('.csv'):
@@ -72,7 +73,7 @@ def upload_file():
                         # Save the processed data
                         save_data(data_to_save)
                         flash('success: File successfully uploaded and processed')
-                        return redirect(url_for('view_data'))
+                        return redirect(url_for('index'))
                 except UnicodeDecodeError:
                     # Try the next encoding
                     continue
@@ -85,16 +86,7 @@ def upload_file():
             return redirect(url_for('index'))
     else:
         flash('Only CSV files are allowed')
-        return redirect(request.url)  # Redirect to the same URL to avoid Method Not Allowed
-
-@app.route('/data')
-def view_data():
-    data = get_all_data()
-    if data and len(data) > 0:
-        columns = data[0].keys()
-    else:
-        columns = []
-    return render_template('data.html', data=data, columns=columns)
+        return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True) 
