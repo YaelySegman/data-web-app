@@ -7,43 +7,6 @@ This document provides instructions for setting up the Data Web Application on b
 - Python 3.8 or higher
 - Git
 
-## Setup on Windows
-
-1. **Clone the repository**
-
-   ```
-   git clone https://github.com/YaelySegman/data-web-app.git
-   cd data-web-app
-   ```
-
-2. **Create a virtual environment**
-
-   ```
-   python -m venv data-web-page
-   data-web-page\Scripts\activate
-   ```
-
-3. **Install dependencies**
-
-   ```
-   pip install -r requirements.txt
-   ```
-
-4. **Create necessary directories**
-
-   ```
-   mkdir uploads
-   ```
-
-5. **Run the application**
-
-   ```
-   python app\app.py
-   ```
-
-6. **Access the application**
-
-   Open your web browser and navigate to `http://127.0.0.1:5000`
 
 ## Setup on Ubuntu
 
@@ -82,6 +45,47 @@ This document provides instructions for setting up the Data Web Application on b
 6. **Access the application**
 
    Open your web browser and navigate to `http://127.0.0.1:5000`
+
+   
+## Setup on Windows
+
+1. **Clone the repository**
+
+   ```
+   git clone https://github.com/YaelySegman/data-web-app.git
+   cd data-web-app
+   ```
+
+2. **Create a virtual environment**
+
+   ```
+   python -m venv data-web-page
+   data-web-page\Scripts\activate
+   ```
+
+3. **Install dependencies**
+
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. **Create necessary directories**
+
+   ```
+   mkdir uploads
+   ```
+
+5. **Run the application**
+
+   ```
+   python app\app.py
+   ```
+
+6. **Access the application**
+
+   Open your web browser and navigate to `http://127.0.0.1:5000`
+
+
 
 ## Database Initialization
 
