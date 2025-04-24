@@ -129,23 +129,68 @@ tr:hover {
 .sortable {
     cursor: pointer;
     position: relative;
+    padding-right: 25px; /* Make room for the sort indicators */
 }
 
 .sortable:after {
     content: '⇅';
     position: absolute;
-    right: 8px;
+    right: 5px;
     color: #999;
+    font-size: 14px;
 }
 
 .sortable.asc:after {
     content: '↑';
-    color: #333;
+    color: #2196F3;
+    font-weight: bold;
 }
 
 .sortable.desc:after {
     content: '↓';
-    color: #333;
+    color: #2196F3;
+    font-weight: bold;
+}
+
+.sortable.primary:after {
+    color: #2196F3;
+    font-weight: bold;
+}
+
+.sortable.secondary:after {
+    color: #757575;
+    font-size: 12px;
+}
+
+/* Add a tooltip to show sorting order */
+.sortable[data-sort-order]:before {
+    content: attr(data-sort-order);
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.sortable:hover[data-sort-order]:before {
+    opacity: 1;
+}
+
+.primary-sorter {
+    font-weight: bold; /* Highlight primary sorter */
+    color: blue; /* Change color for primary sorter */
+}
+
+.secondary-sorter {
+    font-weight: normal; /* Normal weight for secondary sorter */
+    color: gray; /* Change color for secondary sorter */
 }
 
 /* CSV Format Info Styles */

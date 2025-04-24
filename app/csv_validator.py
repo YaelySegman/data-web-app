@@ -1,16 +1,34 @@
+"""
+CSV validation module for the Patient Outcomes Data Web Application.
+Handles validation of uploaded CSV files to ensure they meet the required format.
+"""
+
 import csv
 import codecs
 import logging
 
 def validate_csv(file_path):
     """
-    Validates that the CSV file has the expected format.
-    Returns (is_valid, message) tuple.
+    Validates that the CSV file has the expected format and content.
+    
+    Args:
+        file_path (str): Path to the CSV file to validate
+        
+    Returns:
+        tuple: (is_valid, message)
+            - is_valid (bool): True if the file is valid, False otherwise
+            - message (str): Description of validation result or error message
+            
+    The function checks:
+    1. File is not empty
+    2. File can be decoded with supported encodings
+    3. Required columns are present
+    4. Data in each row is valid
     """
     required_columns = ['Patient ID', 'Outcome']
     
     try:
-        # Try different encodings
+        # Try different encodings to handle various file formats
         encodings = ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
         
         for encoding in encodings:
@@ -44,7 +62,7 @@ def validate_csv(file_path):
                         logging.error(f"Missing required columns: {', '.join(missing_columns)}")
                         return False, f"Missing required columns: {', '.join(missing_columns)}"
                     
-                    # Check data types in rows
+                    # Check data types and content in rows
                     for i, row in enumerate(csv_reader, start=2):  # Start from 2 to account for header
                         if len(row) != len(header):
                             return False, f"Row {i} has incorrect number of columns"

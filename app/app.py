@@ -1,3 +1,8 @@
+"""
+Main application module for the Patient Outcomes Data Web Application.
+Handles routing, file uploads, and data processing.
+"""
+
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
@@ -20,15 +25,40 @@ with app.app_context():
 
 @app.teardown_appcontext
 def close_connection(exception):
+    """
+    Close the database connection when the application context ends.
+    
+    Args:
+        exception: Exception object if an error occurred
+    """
     close_db()
 
 @app.route('/')
 def index():
+    """
+    Render the main page with the patient outcomes data table.
+    
+    Returns:
+        str: Rendered HTML template with patient data
+    """
     data = get_all_data()
     return render_template('index.html', data=data)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    """
+    Handle CSV file uploads.
+    Validates and processes the uploaded file.
+    
+    Returns:
+        str: Redirect to index page with appropriate flash message
+        
+    The function:
+    1. Validates the uploaded file
+    2. Processes the CSV data
+    3. Saves the data to the database
+    4. Handles various error cases
+    """
     if 'file' not in request.files:
         flash('No file part')
         return redirect(url_for('index'))

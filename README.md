@@ -28,6 +28,8 @@ See [usage documentation](docs/usage.md) for information on how to use the appli
 - `config/`: Configuration files
 - `docs/`: Documentation
 - `schema.sql`: Database schema
+- `requirements.txt`: requirements
+- `README.md`: README
 
 ## License
 

@@ -78,7 +78,7 @@
                 <table id="patient_outcomes-table">
                     <thead>
                         <tr>
-                            <th data-column="recorded_at" class="sortable">Outcome Recorded</th>
+                            <th data-column="recorded_at" class="sortable">Date/Time</th>
                             <th data-column="patient_id" class="sortable">Patient ID</th>
                             <th data-column="outcome" class="sortable">Outcome</th>
                         </tr>
@@ -86,7 +86,7 @@
                     <tbody>
                         {% for row in data %}
                             <tr class="{% if not row.is_current %}inactive{% endif %}" data-patient-id="{{ row.patient_id }}">
-                                <td>{{ row.recorded_at }}</td>
+                                <td>{{ row.recorded_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                                 <td>{{ row.patient_id }}</td>
                                 <td>{{ row.outcome }}</td>
                             </tr>
