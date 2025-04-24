@@ -3,30 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Revision Keeper - A web application for managing patient outcomes data">
     <title>Revision Keeper</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script>
-        function validateAndSubmit() {
-            const fileInput = document.getElementById('file');
-            const errorMessage = document.getElementById('errorMessage');
-
-            if (!fileInput.files.length) {
-                errorMessage.textContent = 'Please select a file to upload.';
-                return false;
-            }
-
-            errorMessage.textContent = '';
-            return true;
-        }
-    </script>
 </head>
 <body>
     <div class="container">
-        <h1>Revision Keeper</h1>
+        <header>
+            <h1>Revision Keeper</h1>
+        </header>
         
         {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <div class="messages">
+                <div class="messages" role="alert" aria-live="polite">
                     {% for message in messages %}
                         <div class="message">{{ message }}</div>
                     {% endfor %}
@@ -34,69 +23,73 @@
             {% endif %}
         {% endwith %}
         
-        <div class="upload-section">
-            <h2>Upload Patient Outcomes CSV File</h2>
-            <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" onsubmit="return validateAndSubmit();">
-                <div class="form-group">
-                    <label for="file">Select CSV file:</label>
-                    <input type="file" id="file" name="file" accept=".csv">
-                </div>
-                <button type="submit" class="btn">Upload</button>
-                <div id="errorMessage" style="color: red;"></div>
-            </form>
-            
-            <div class="csv-format-info">
-                <h3>Expected CSV Format</h3>
-                <p>Your CSV file should have the following columns:</p>
-                <ul>
-                    <li><strong>Patient ID</strong> - The unique identifier for the patient</li>
-                    <li><strong>Outcome</strong> - The patient's outcome value</li>
-                </ul>
-                <p>Example:</p>
-                <pre>Patient ID,Outcome
+        <main>
+            <section class="upload-section" aria-labelledby="upload-heading">
+                <h2 id="upload-heading">Upload Patient Outcomes CSV File</h2>
+                <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" onsubmit="return validateAndSubmit();">
+                    <div class="form-group">
+                        <label for="file">Select CSV file:</label>
+                        <input type="file" id="file" name="file" accept=".csv" aria-required="true">
+                        <div id="errorMessage" class="error-message" role="alert" aria-live="polite"></div>
+                    </div>
+                    <button type="submit" class="btn">Upload</button>
+                </form>
+                
+                <div class="csv-format-info">
+                    <h3>Expected CSV Format</h3>
+                    <p>Your CSV file should have the following columns:</p>
+                    <ul>
+                        <li><strong>Patient ID</strong> - The unique identifier for the patient</li>
+                        <li><strong>Outcome</strong> - The patient's outcome value</li>
+                    </ul>
+                    <p>Example:</p>
+                    <pre><code>Patient ID,Outcome
 12345,Good
-67890,Fair</pre>
-            </div>
-        </div>
-
-        <div class="data-section">
-            <h2>Patient Outcomes Data</h2>
-            <div class="controls">
-                <div class="search-container">
-                    <label for="patient-search">Search by Patient ID:</label>
-                    <input type="text" id="patient-search" placeholder="Enter Patient ID">
+67890,Fair</code></pre>
                 </div>
-                <div class="toggle-container">
-                    <label class="toggle-label">
-                        <input type="checkbox" id="show-archived" checked>
-                        <span class="toggle-text">Show Archived Data</span>
-                    </label>
-                </div>
-            </div>
+            </section>
 
-            {% if data %}
-                <table id="patient_outcomes-table">
-                    <thead>
-                        <tr>
-                            <th data-column="recorded_at" class="sortable">Date/Time</th>
-                            <th data-column="patient_id" class="sortable">Patient ID</th>
-                            <th data-column="outcome" class="sortable">Outcome</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for row in data %}
-                            <tr class="{% if not row.is_current %}inactive{% endif %}" data-patient-id="{{ row.patient_id }}">
-                                <td>{{ row.recorded_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-                                <td>{{ row.patient_id }}</td>
-                                <td>{{ row.outcome }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p>No patient outcomes available. Please upload a CSV file.</p>
-            {% endif %}
-        </div>
+            <section class="data-section" aria-labelledby="data-heading">
+                <h2 id="data-heading">Patient Outcomes Data</h2>
+                <div class="controls">
+                    <div class="search-container">
+                        <label for="patient-search">Search by Patient ID:</label>
+                        <input type="text" id="patient-search" placeholder="Enter Patient ID" aria-label="Search patients">
+                    </div>
+                    <div class="toggle-container">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="show-archived" checked aria-label="Show archived data">
+                            <span class="toggle-text">Show Archived Data</span>
+                        </label>
+                    </div>
+                </div>
+
+                {% if data %}
+                    <div class="table-container" role="region" aria-label="Patient outcomes data table">
+                        <table id="patient_outcomes-table">
+                            <thead>
+                                <tr>
+                                    <th data-column="recorded_at" class="sortable" scope="col">Date/Time</th>
+                                    <th data-column="patient_id" class="sortable" scope="col">Patient ID</th>
+                                    <th data-column="outcome" class="sortable" scope="col">Outcome</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in data %}
+                                    <tr class="{% if not row.is_current %}inactive{% endif %}" data-patient-id="{{ row.patient_id }}">
+                                        <td>{{ row.recorded_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                        <td>{{ row.patient_id }}</td>
+                                        <td>{{ row.outcome }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p>No patient outcomes available. Please upload a CSV file.</p>
+                {% endif %}
+            </section>
+        </main>
     </div>
     
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

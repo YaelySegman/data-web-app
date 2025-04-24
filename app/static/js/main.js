@@ -3,6 +3,24 @@
  * Handles table sorting, searching, archived data visibility, and error/sucess messages
  */
 
+/**
+ * Form validation function
+ * Validates file input before form submission
+ * @returns {boolean} Whether the form is valid
+ */
+function validateAndSubmit() {
+    const fileInput = document.getElementById('file');
+    const errorMessage = document.getElementById('errorMessage');
+
+    if (!fileInput.files.length) {
+        errorMessage.textContent = 'Please select a file to upload.';
+        return false;
+    }
+
+    errorMessage.textContent = '';
+    return true;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     /**
      * Flash Message Handler
